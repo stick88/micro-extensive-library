@@ -70,14 +70,7 @@ namespace smartboard {
         LED6 = 6,
         LED7 = 7,
         LED8 = 8,
-        LED9 = 9,
-        LED10 = 10,
-        LED11 = 11,
-        LED12 = 12,
-        LED13 = 13,
-        LED14 = 14,
-        LED15 = 15,
-        LED16 = 16,
+        
     }
 
     export class ServoConfigObject {
