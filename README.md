@@ -1,18 +1,13 @@
-# pca9685-master
+# micro-extensive-library
 
-this is driver pca9685
+This is a library in micro expansion board of openjump.
 
-## TODO
+## 模块图片
+![pca9685_01](https://user-images.githubusercontent.com/44191076/47269928-d9c24b80-d596-11e8-8627-65a4f2349518.JPG)
 
-- [ ] Add a reference for your blocks here
-- [ ] Add "icon.png" image (300x200) in the root folder
-- [ ] Add "- beta" to the GitHub project description if you are still iterating it.
-- [ ] Turn on your automated build on https://travis-ci.org
-- [ ] Use "pxt bump" to create a tagged release on GitHub
-- [ ] On GitHub, create a new file named LICENSE. Select the MIT License template.
-- [ ] Get your package reviewed and approved https://makecode.microbit.org/extensions/approval
+## License
 
-Read more at https://makecode.microbit.org/extensions
+MIT
 
 ## Supported targets
 
