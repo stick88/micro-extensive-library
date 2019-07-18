@@ -1,8 +1,8 @@
 /**
- * smartboard
+ * PCA9685
  */
 //% weight=100 color=#0fbc11 icon=""
-namespace smartboard {
+namespace PCA9685 {
     let _DEBUG: boolean = false
     const debug = (msg: string) => {
         if (_DEBUG === true) {
