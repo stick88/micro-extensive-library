@@ -3,7 +3,7 @@
 This is a library in micro expansion board of openjump.
 
 ## 模块图片
-![pca9685_01](https://github.com/stick88/micro-extensive-library/blob/master/icon.jpg)
+![pca9685_01](https://github.com/stick88/micro-extensive-library/blob/master/icon.png)
 
 ## License
 
