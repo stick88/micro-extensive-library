@@ -10,7 +10,7 @@ namespace smartboard {
             serial.writeLine(msg)
         }
     }
-
+    const chipaddress_x = 0x70
     const MIN_CHIP_ADDRESS = 0x40
     const MAX_CHIP_ADDRESS = MIN_CHIP_ADDRESS + 62
     const chipResolution = 4096;
@@ -263,14 +263,14 @@ namespace smartboard {
     }
 
     /**
-     * Used to move the given servo to the specified degrees (0-180) connected to the PCA9685
+     * s设置舵机角度
      * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
      * @param servoNum The number (1-16) of the servo to move
      * @param degrees The degrees (0-180) to move the servo to
      */
     //% block
-    export function setServoPosition(servoNum: ServoNum = 1, degrees: number, chipAddress: number = 0x40): void {
-        const chip = getChipConfig(chipAddress)
+    export function setServoPosition(servoNum: ServoNum = 1, degrees: number): void { 
+        const chip = getChipConfig(chipaddress_x)     
         servoNum = Math.max(1, Math.min(16, servoNum))
         degrees = Math.max(0, Math.min(180, degrees))
         const servo: ServoConfig = chip.servos[servoNum - 1]
@@ -292,9 +292,9 @@ namespace smartboard {
      * @param speed [-100-100] The speed (-100-100) to turn the servo at
      */
     //% block
-    export function setCRServoPosition(servoNum: ServoNum = 1, speed: number, chipAddress: number = 0x40): void {
+    export function setCRServoPosition(servoNum: ServoNum = 1, speed: number): void {
         debug(`setCRServoPosition(${servoNum}, ${speed}, ${chipAddress})`)
-        const chip = getChipConfig(chipAddress)
+        const chip = getChipConfig(chipaddress_x)
         const freq = chip.freq
         servoNum = Math.max(1, Math.min(16, servoNum))
         const servo: ServoConfig = chip.servos[servoNum - 1]
