@@ -226,16 +226,16 @@ namespace smartboard {
         debug(`  pinOffset ${pinOffset}`)
 
         // Low byte of onStep
-        write(0x70, pinOffset + channel0OnStepLowByte, onStep & 0xFF)
+        write(chipaddress_x, pinOffset + channel0OnStepLowByte, onStep & 0xFF)
 
         // High byte of onStep
-        write(0x70, pinOffset + channel0OnStepHighByte, (onStep >> 8) & 0x0F)
+        write(chipaddress_x, pinOffset + channel0OnStepHighByte, (onStep >> 8) & 0x0F)
 
         // Low byte of offStep
-        write(0x70, pinOffset + channel0OffStepLowByte, offStep & 0xFF)
+        write(chipaddress_x, pinOffset + channel0OffStepLowByte, offStep & 0xFF)
 
         // High byte of offStep
-        write(0x70, pinOffset + channel0OffStepHighByte, (offStep >> 8) & 0x0F)
+        write(chipaddress_x, pinOffset + channel0OffStepHighByte, (offStep >> 8) & 0x0F)
     }
 
     /**
