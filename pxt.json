@@ -1,7 +1,8 @@
 {
-    "name": "pca9685-master",
-    "version": "0.0.0",
-    "description": "this is driver pca9685",
+    "name": "micro扩展版库",
+    "version": "0.0.1",
+    "description": "This is a library in micro expansion board of openjump.",
+    "license": "MIT",
     "dependencies": {
         "core": "*",
         "radio": "*"
@@ -13,6 +14,6 @@
     "testFiles": [
         "test.ts"
     ],
-    "public": false,
-    "license": "mit"
+    "public": true
+    
 }
