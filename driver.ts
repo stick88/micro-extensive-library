@@ -1,7 +1,8 @@
+
 /**
  * smartboard
  */
-//% weight=100 color=#0fbc11 icon=""
+//% weight=100 color=#ffbc11 icon=""
 namespace smartboard {
     let _DEBUG: boolean = false
     const debug = (msg: string) => {
@@ -222,34 +223,33 @@ namespace smartboard {
     }
 
     /**
-     * Used to set the pulse range (0-4095) of a given pin on the PCA9685
-     * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
+     * Used to set the pulse range (0-4095) of a given pin on the smartboard
      * @param pinNumber The pin number (0-15) to set the pulse range on
      * @param onStep The range offset (0-4095) to turn the signal on
      * @param offStep The range offset (0-4095) to turn the signal off
      */
-    //% block advanced=true
-    export function setPinPulseRange(pinNumber: PinNum = 0, onStep: number = 0, offStep: number = 2048, chipAddress: number = 0x40): void {
+    //% block 
+    export function setPinPulseRange(pinNumber: PinNum = 0, onStep: number = 0, offStep: number = 2048 ): void {
         pinNumber = Math.max(0, Math.min(15, pinNumber))
         const buffer = pins.createBuffer(2)
         const pinOffset = PinRegDistance * pinNumber
         onStep = Math.max(0, Math.min(4095, onStep))
         offStep = Math.max(0, Math.min(4095, offStep))
 
-        debug(`setPinPulseRange(${pinNumber}, ${onStep}, ${offStep}, ${chipAddress})`)
+        debug(`setPinPulseRange(${pinNumber}, ${onStep}, ${offStep}, ${0x70})`)
         debug(`  pinOffset ${pinOffset}`)
 
         // Low byte of onStep
-        write(chipAddress, pinOffset + channel0OnStepLowByte, onStep & 0xFF)
+        write(0x70, pinOffset + channel0OnStepLowByte, onStep & 0xFF)
 
         // High byte of onStep
-        write(chipAddress, pinOffset + channel0OnStepHighByte, (onStep >> 8) & 0x0F)
+        write(0x70, pinOffset + channel0OnStepHighByte, (onStep >> 8) & 0x0F)
 
         // Low byte of offStep
-        write(chipAddress, pinOffset + channel0OffStepLowByte, offStep & 0xFF)
+        write(0x70, pinOffset + channel0OffStepLowByte, offStep & 0xFF)
 
         // High byte of offStep
-        write(chipAddress, pinOffset + channel0OffStepHighByte, (offStep >> 8) & 0x0F)
+        write(0x70, pinOffset + channel0OffStepHighByte, (offStep >> 8) & 0x0F)
     }
 
     /**
@@ -264,7 +264,7 @@ namespace smartboard {
         dutyCycle = Math.max(0, Math.min(100, dutyCycle))
         const pwm = (dutyCycle * (chipResolution - 1)) / 100
         debug(`setLedDutyCycle(${ledNum}, ${dutyCycle}, ${chipAddress})`)
-        return setPinPulseRange(ledNum - 1, 0, pwm, chipAddress)
+        return setPinPulseRange(ledNum - 1, 0, pwm)
     }
 
     function degrees180ToPWM(freq: number, degrees: number, offsetStart: number, offsetEnd: number): number {
@@ -297,7 +297,7 @@ namespace smartboard {
         debug(`  servo.maxOffset ${servo.maxOffset}`)
         debug(`  pwm ${pwm}`)
         servo.debug()
-        return setPinPulseRange(servo.pinNumber, 0, pwm, chipAddress)
+        return setPinPulseRange(servo.pinNumber, 0, pwm)
     }
 
     /**
@@ -317,7 +317,7 @@ namespace smartboard {
         const offsetMid = calcFreqOffset(freq, servo.midOffset)
         const offsetEnd = calcFreqOffset(freq, servo.maxOffset)
         if (speed === 0) {
-            return setPinPulseRange(servo.pinNumber, 0, offsetMid, chipAddress)
+            return setPinPulseRange(servo.pinNumber, 0, offsetMid)
         }
         const isReverse: boolean = speed < 0
         debug(isReverse ? 'Reverse' : 'Forward')
@@ -332,7 +332,7 @@ namespace smartboard {
         debug(`max ${offsetEnd}`)
         const pwm = isReverse ? offsetMid - calcOffset : offsetMid + calcOffset
         debug(`pwm ${pwm}`)
-        return setPinPulseRange(servo.pinNumber, 0, pwm, chipAddress)
+        return setPinPulseRange(servo.pinNumber, 0, pwm)
     }
 
     /**
