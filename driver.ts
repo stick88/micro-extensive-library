@@ -2,7 +2,7 @@
 /**
  * smartboard
  */
-//% weight=100 color=#ffbc11 icon=""
+//% weight=100 color=#f0bc11 icon=""
 namespace smartboard {
     let _DEBUG: boolean = false
     const debug = (msg: string) => {
@@ -46,13 +46,7 @@ namespace smartboard {
         Pin6 = 6,
         Pin7 = 7,
         Pin8 = 8,
-        Pin9 = 9,
-        Pin10 = 10,
-        Pin11 = 11,
-        Pin12 = 12,
-        Pin13 = 13,
-        Pin14 = 14,
-        Pin15 = 15,
+        
     }
 
     export enum ServoNum {
@@ -64,14 +58,7 @@ namespace smartboard {
         Servo6 = 6,
         Servo7 = 7,
         Servo8 = 8,
-        Servo9 = 9,
-        Servo10 = 10,
-        Servo11 = 11,
-        Servo12 = 12,
-        Servo13 = 13,
-        Servo14 = 14,
-        Servo15 = 15,
-        Servo16 = 16,
+        
     }
 
     export enum LEDNum {
@@ -236,7 +223,7 @@ namespace smartboard {
         onStep = Math.max(0, Math.min(4095, onStep))
         offStep = Math.max(0, Math.min(4095, offStep))
 
-        debug(`setPinPulseRange(${pinNumber}, ${onStep}, ${offStep}, ${0x70})`)
+        debug(`setPinPulseRange(${pinNumber}, ${onStep}, ${offStep})`)
         debug(`  pinOffset ${pinOffset}`)
 
         // Low byte of onStep
