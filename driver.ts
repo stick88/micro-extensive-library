@@ -4,10 +4,10 @@
  */
 //% weight=100 color=#f0bc11 icon=""
 namespace smartboard {
-    let _DEBUG: boolean = false
+    let _DEBUG: boolean = true
     const debug = (msg: string) => {
         if (_DEBUG === true) {
-            //serial.writeLine(msg)
+            serial.writeLine(msg)
         }
     }
 
@@ -215,7 +215,6 @@ namespace smartboard {
      * @param onStep The range offset (0-4095) to turn the signal on
      * @param offStep The range offset (0-4095) to turn the signal off
      */
-    //% block 
     export function setPinPulseRange(pinNumber: PinNum = 0, onStep: number = 0, offStep: number = 2048 ): void {
         pinNumber = Math.max(0, Math.min(15, pinNumber))
         const buffer = pins.createBuffer(2)
@@ -246,14 +245,13 @@ namespace smartboard {
      * @param dutyCycle The duty cycle (0-100) to set the LED to
      */
     //% block
-    export function setLedDutyCycle(ledNum: LEDNum = 1, dutyCycle: number, chipAddress: number = 0x40): void {
+    export function setLedDutyCycle(ledNum: LEDNum = 1, dutyCycle: number): void {
         ledNum = Math.max(1, Math.min(16, ledNum))
         dutyCycle = Math.max(0, Math.min(100, dutyCycle))
         const pwm = (dutyCycle * (chipResolution - 1)) / 100
         debug(`setLedDutyCycle(${ledNum}, ${dutyCycle}, ${chipAddress})`)
         return setPinPulseRange(ledNum - 1, 0, pwm)
     }
-
     function degrees180ToPWM(freq: number, degrees: number, offsetStart: number, offsetEnd: number): number {
         // Calculate the offset of the off point in the freq
         offsetEnd = calcFreqOffset(freq, offsetEnd)
