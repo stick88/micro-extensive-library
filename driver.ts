@@ -261,7 +261,7 @@ namespace smartboard {
         // Clamp it to the bounds
         return Math.max(offsetStart, Math.min(offsetEnd, calcOffset))
     }
-
+    
     /**
      * 设置舵机角度
      * @param servoNum 选择舵机

@@ -2,6 +2,7 @@
     "name": "smartboard",
     "version": "0.0.1",
     "description": "This is a library in micro expansion board of openjump.",
+    "icon": "icon.png",
     "license": "MIT",
     "dependencies": {
         "core": "*",
