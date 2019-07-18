@@ -10,7 +10,7 @@ namespace smartboard {
             serial.writeLine(msg)
         }
     }
-    const chipaddress_x = 0x70
+    const chipaddress_x = 0x01
     const MIN_CHIP_ADDRESS = 0x40
     const MAX_CHIP_ADDRESS = MIN_CHIP_ADDRESS + 62
     const chipResolution = 4096;
@@ -263,10 +263,9 @@ namespace smartboard {
     }
 
     /**
-     * s设置舵机角度
-     * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
-     * @param servoNum The number (1-16) of the servo to move
-     * @param degrees The degrees (0-180) to move the servo to
+     * 设置舵机角度
+     * @param servoNum 选择舵机
+     * @param degrees 舵机角度
      */
     //% block
     export function setServoPosition(servoNum: ServoNum = 1, degrees: number): void { 
@@ -290,8 +289,7 @@ namespace smartboard {
      * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
      * @param servoNum The number (1-16) of the servo to move
      * @param speed [-100-100] The speed (-100-100) to turn the servo at
-     */
-    //% block
+     */ 
     export function setCRServoPosition(servoNum: ServoNum = 1, speed: number): void {
         debug(`setCRServoPosition(${servoNum}, ${speed}, ${chipAddress})`)
         const chip = getChipConfig(chipaddress_x)
@@ -328,7 +326,7 @@ namespace smartboard {
      * @param maxTimeCs The maximum centiseconds (0-1000) to leave the servo on for; eg: 25
      * @param midTimeCs The mid (90 degree for regular or off position if continuous rotation) for the servo; eg: 15
      */
-    //% block advanced=true
+    
     export function setServoLimits(servoNum: ServoNum = 1, minTimeCs: number = 5, maxTimeCs: number = 2.5, midTimeCs: number = -1, chipAddress: number = 0x40): void {
         const chip = getChipConfig(chipAddress)
         servoNum = Math.max(1, Math.min(16, servoNum))
@@ -346,7 +344,6 @@ namespace smartboard {
      * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
      * @param freq [40-1000] Frequency (40-1000) in hertz to run the clock cycle at; eg: 50
      */
-    //% block advanced=true
     export function init(chipAddress: number = 0x40, newFreq: number = 50) {
         debug(`Init chip at address ${chipAddress} to ${newFreq}Hz`)
         const buf = pins.createBuffer(2)
@@ -372,7 +369,7 @@ namespace smartboard {
      * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs.
      * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
      */
-    //% block
+   
     export function reset(chipAddress: number = 0x40): void {
         return init(chipAddress, getChipConfig(chipAddress).freq);
     }
@@ -381,7 +378,7 @@ namespace smartboard {
      * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs.
      * @param hexAddress The hex address to convert to decimal; eg: 0x40
      */
-    //% block
+
     export function chipAddress(hexAddress: string): number {
         hexAddress = stripHexPrefix(hexAddress)
         let dec = 0
