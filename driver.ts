@@ -240,7 +240,7 @@ namespace smartboard {
         dutyCycle = Math.max(0, Math.min(100, dutyCycle))
         const pwm = (dutyCycle * (chipResolution-1)) / 100
         debug(`setLedDutyCycle(${ledNum}, ${dutyCycle}, ${chipAddress})`)
-        return setPinPulseRange(ledNum , 0, pwm)
+        return setPinPulseRange(ledNum -1 , 0, pwm)
     }
     /**
      * 设置pin口高低电平
@@ -250,10 +250,10 @@ namespace smartboard {
     //% block
     export function setPinOnoff(ledNum: PinNum = 1, dutyCycle: Pinstatus = 1 ): void {
         ledNum = Math.max(0, Math.min(8, ledNum))
-        dutyCycle = Math.max(0, Math.min(100, dutyCycle))
+        //dutyCycle = Math.max(0, Math.min(100, dutyCycle))
         const pwm = (dutyCycle * (chipResolution-1)) 
         debug(`setLedDutyCycle(${ledNum}, ${dutyCycle}`)
-        return setPinPulseRange(ledNum , 0, pwm)
+        return setPinPulseRange(ledNum-1 , 0, pwm)
     }
     function degrees180ToPWM(freq: number, degrees: number, offsetStart: number, offsetEnd: number): number {
         // Calculate the offset of the off point in the freq
