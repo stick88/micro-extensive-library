@@ -37,7 +37,7 @@ namespace smartboard {
   
 
     export enum PinNum {
-        Pin0 = 0,
+        
         Pin1 = 1,
         Pin2 = 2,
         Pin3 = 3,
@@ -72,7 +72,12 @@ namespace smartboard {
         LED8 = 8,
         
     }
-
+    export enum Pinstatus {
+        ON  =  0,
+        OFF =  1,
+        
+        
+    }
     export class ServoConfigObject {
         id: number;
         pinNumber: number;
@@ -231,7 +236,20 @@ namespace smartboard {
      */
     //% block
     export function setPinDutyCycle(ledNum: PinNum = 1, dutyCycle: number): void {
-        ledNum = Math.max(1, Math.min(8, ledNum))
+        ledNum = Math.max(0, Math.min(8, ledNum))
+        dutyCycle = Math.max(0, Math.min(100, dutyCycle))
+        const pwm = (dutyCycle * (chipResolution-1)) / 100
+        debug(`setLedDutyCycle(${ledNum}, ${dutyCycle}, ${chipAddress})`)
+        return setPinPulseRange(ledNum , 0, pwm)
+    }
+    /**
+     * 设置pin口高低电平
+     * @param PinNumber The number (1-16) of the LED to set the duty cycle on
+     * @param dutyCycle The duty cycle (0-100) to set the LED to
+     */
+    //% block
+    export function setPinOnoff(ledNum: PinNum = 1, dutyCycle: Pinstatus = 1 ): void {
+        ledNum = Math.max(0, Math.min(8, ledNum))
         dutyCycle = Math.max(0, Math.min(100, dutyCycle))
         const pwm = (dutyCycle * (chipResolution-1)) / 100
         debug(`setLedDutyCycle(${ledNum}, ${dutyCycle}, ${chipAddress})`)
