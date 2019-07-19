@@ -238,7 +238,7 @@ namespace smartboard {
     export function setPinDutyCycle(ledNum: PinNum = 1, dutyCycle: number): void {
         
         const chip = getChipConfig(chipaddress_x)
-        ledNum = Math.max(0, Math.min(8, ledNum))
+        ledNum = Math.max(1, Math.min(8, ledNum))
         dutyCycle = Math.max(0, Math.min(100, dutyCycle))
         const pwm = (dutyCycle * (chipResolution - 1)) / 100
         const servo: ServoConfig = chip.servos[ledNum - 1]
