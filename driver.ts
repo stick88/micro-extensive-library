@@ -240,8 +240,9 @@ namespace smartboard {
         const chip = getChipConfig(chipaddress_x)
         ledNum = Math.max(1, Math.min(8, ledNum))
         dutyCycle = Math.max(0, Math.min(100, dutyCycle))
-        const pwm = (dutyCycle * (chipResolution - 1)) / 100
         const servo: ServoConfig = chip.servos[ledNum - 1]
+        const pwm = (dutyCycle * (chipResolution - 1)) / 100
+        
         debug(`setLedDutyCycle(${ledNum}, ${dutyCycle}, ${chipAddress})`)
         return setPinPulseRange(servo.pinNumber , 0, pwm)
     }
