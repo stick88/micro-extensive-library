@@ -236,11 +236,14 @@ namespace smartboard {
      */
     //% block
     export function setPinDutyCycle(ledNum: PinNum = 1, dutyCycle: number): void {
+        
+        const chip = getChipConfig(chipaddress_x)
         ledNum = Math.max(0, Math.min(8, ledNum))
         dutyCycle = Math.max(0, Math.min(100, dutyCycle))
-        const pwm = (dutyCycle * (chipResolution-1)) / 100
+        const pwm = (dutyCycle * (chipResolution - 1)) / 100
+        const servo: ServoConfig = chip.servos[ledNum - 1]
         debug(`setLedDutyCycle(${ledNum}, ${dutyCycle}, ${chipAddress})`)
-        return setPinPulseRange(ledNum - 1 , 0, pwm)
+        return setPinPulseRange(servo.pinNumber , 0, pwm)
     }
     
     /**
