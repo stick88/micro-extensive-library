@@ -249,7 +249,8 @@ namespace smartboard {
      * @param dutyCycle The duty cycle (0-100) to set the LED to
      */
     //% block
-    export function setPinOnoff(ledNum: PinNum = 1, dutyCycle: Pinstatus = 1 ): void {
+    export function setPinOnoff(ledNum: PinNum = 1, dutyCycle: Pinstatus = 1): void {
+        const chip = getChipConfig(chipaddress_x) 
         ledNum = Math.max(0, Math.min(8, ledNum))
         dutyCycle = Math.max(0, Math.min(1, dutyCycle))
         const pwm = (dutyCycle * (chipResolution - 1)) 
