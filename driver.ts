@@ -10,7 +10,7 @@ namespace smartboard {
             serial.writeLine(msg)
         }
     }
-    const chipaddress_x = 0x01
+    const chipaddress_x = 0x70
     const MIN_CHIP_ADDRESS = 0x40
     const MAX_CHIP_ADDRESS = MIN_CHIP_ADDRESS + 62
     const chipResolution = 4096;
