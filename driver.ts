@@ -293,7 +293,7 @@ namespace smartboard {
     }
     function setStepper_28(index: number, dir: boolean): void {  //第几组，正反
         
-        debug(`setstepper ${index} dir ${dir}`)
+        
         if (index == 1) {
             if (dir) {
                 setPwm(4, STP_CHA_L, STP_CHA_H);
@@ -427,6 +427,7 @@ namespace smartboard {
         //if (!initialized) {
         //    initPCA9685()
         //}
+        debug(`stepperdegree (${index}, dir${direction}, number${degree})`)
         if (degree == 0) { 
             return;
         }
