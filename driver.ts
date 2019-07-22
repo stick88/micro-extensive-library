@@ -292,6 +292,8 @@ namespace smartboard {
         return ((offset * 1000) / (1000 / freq) * chipResolution) / 10000
     }
     function setStepper_28(index: number, dir: boolean): void {  //第几组，正反
+        
+        debug(`setstepper ${index} dir ${dir}`)
         if (index == 1) {
             if (dir) {
                 setPwm(4, STP_CHA_L, STP_CHA_H);
