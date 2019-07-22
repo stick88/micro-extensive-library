@@ -427,7 +427,7 @@ namespace smartboard {
         //if (!initialized) {
         //    initPCA9685()
         //}
-        debug(`stepperdegree (${index}, dir${direction}, number${degree})`)
+        debug(`stepperdegree (${index}, ${direction}, ${degree})`)
         if (degree == 0) { 
             return;
         }
