@@ -15,7 +15,7 @@ namespace smartboard {
     const MAX_CHIP_ADDRESS = MIN_CHIP_ADDRESS + 62
     const chipResolution = 4096;
     const PrescaleReg = 0xFE //the prescale register address
-    const modeRegister1 = 0x00 // MODE1
+    const modeRegister1 = 0x00 // modeRegister1
     const modeRegister1Default = 0x01
     const modeRegister2 = 0x01 // MODE2
     const modeRegister2Default = 0x04
@@ -26,16 +26,73 @@ namespace smartboard {
     const allChannelsOnStepHighByte = 0xFB // ALL_LED_ON_H
     const allChannelsOffStepLowByte = 0xFC // ALL_LED_OFF_L
     const allChannelsOffStepHighByte = 0xFD // ALL_LED_OFF_H
+    const PRESCALE = 0xFE
     const PinRegDistance = 4
     const channel0OnStepLowByte = 0x06 // LED0_ON_L
     const channel0OnStepHighByte = 0x07 // LED0_ON_H
     const channel0OffStepLowByte = 0x08 // LED0_OFF_L
     const channel0OffStepHighByte = 0x09 // LED0_OFF_H
 
+    const STP_CHA_L = 2047
+    const STP_CHA_H = 4095
+
+    const STP_CHB_L = 1
+    const STP_CHB_H = 2047
+
+    const STP_CHC_L = 1023
+    const STP_CHC_H = 3071
+
+    const STP_CHD_L = 3071
+    const STP_CHD_H = 1023
+
+
+    const BYG_CHA_L = 3071
+    const BYG_CHA_H = 1023
+
+    const BYG_CHB_L = 1023
+    const BYG_CHB_H = 3071
+
+    const BYG_CHC_L = 4095
+    const BYG_CHC_H = 2047
+
+    const BYG_CHD_L = 2047
+    const BYG_CHD_H = 4095
+
     const hexChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
 
   
+     /**
+     * The user can choose the step motor model.
+     */
+    export enum Stepper { 
+        //% block="42"
+        Ste1 = 1,
+        //% block="28"
+        Ste2 = 2
+    }
 
+    export enum Dir {
+        //% blockId="CW" block="CW"
+        CW = 1,
+        //% blockId="CCW" block="CCW"
+        CCW = -1,
+    }
+        /**
+     * The user can select a two-path stepper motor controller.
+     */
+    export enum Steppers {
+        M1_M2 = 0x01,
+        M3_M4 = 0x02
+    }
+       /**
+     * The user selects the 4-way dc motor.
+     */
+    export enum Motors {
+        M1 = 0x1,
+        M2 = 0x2,
+        M3 = 0x3,
+        M4 = 0x4
+    }
     export enum PinNum {
         
         Pin1 = 1,
@@ -174,14 +231,49 @@ namespace smartboard {
         }
         return str
     }
-
+    function read(addr: number, reg: number) {
+        pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE);
+        let val = pins.i2cReadNumber(addr, NumberFormat.UInt8BE);
+        return val;
+    }
     function write(chipAddress: number, register: number, value: number): void {
         const buffer = pins.createBuffer(2)
         buffer[0] = register
         buffer[1] = value
         pins.i2cWriteBuffer(chipAddress, buffer, false)
     }
+    function initPCA9685(): void {
+        write(chipaddress_x, modeRegister1, 0x00)
+        setFreq(50);
+        //initialized = true
+    }
+    function setFreq(freq: number): void {
+        // Constrain the frequency
+        let prescaleval = 25000000;
+        prescaleval /= 4096;
+        prescaleval /= freq;
+        prescaleval -= 1;
+        let prescale = prescaleval;//Math.floor(prescaleval + 0.5);
+        let oldmode = read(chipaddress_x, modeRegister1);
+        let newmode = (oldmode & 0x7F) | 0x10; // sleep
+        write(chipaddress_x, modeRegister1, newmode); // go to sleep
+        write(chipaddress_x, PRESCALE, prescale); // set the prescaler
+        write(chipaddress_x, modeRegister1, oldmode);
+        control.waitMicros(5000);
+        write(chipaddress_x, modeRegister1, oldmode | 0xa1);
+    }
+    function setPwm(channel: number, on: number, off: number): void {
+        if (channel < 0 || channel > 15)
+            return;
 
+        let buf = pins.createBuffer(5);
+        buf[0] = channel0OnStepLowByte + 4 * channel;
+        buf[1] = on & 0xff;
+        buf[2] = (on >> 8) & 0xff;
+        buf[3] = off & 0xff;
+        buf[4] = (off >> 8) & 0xff;
+        pins.i2cWriteBuffer(chipaddress_x, buf,false);
+    }
     export function getChipConfig(address: number): ChipConfig {
         for (let i = 0; i < chips.length; i++) {
             if (chips[i].address === address) {
@@ -199,7 +291,33 @@ namespace smartboard {
     function calcFreqOffset(freq: number, offset: number) {
         return ((offset * 1000) / (1000 / freq) * chipResolution) / 10000
     }
-
+    function setStepper_28(index: number, dir: boolean): void {  //第几组，正反
+        if (index == 1) {
+            if (dir) {
+                setPwm(4, STP_CHA_L, STP_CHA_H);
+                setPwm(6, STP_CHB_L, STP_CHB_H);
+                setPwm(5, STP_CHC_L, STP_CHC_H);
+                setPwm(7, STP_CHD_L, STP_CHD_H);
+            } else {
+                setPwm(7, STP_CHA_L, STP_CHA_H);
+                setPwm(5, STP_CHB_L, STP_CHB_H);
+                setPwm(6, STP_CHC_L, STP_CHC_H);
+                setPwm(4, STP_CHD_L, STP_CHD_H);
+            }
+        } else {
+            if (dir) {
+                setPwm(0, STP_CHA_L, STP_CHA_H);
+                setPwm(2, STP_CHB_L, STP_CHB_H);
+                setPwm(1, STP_CHC_L, STP_CHC_H);
+                setPwm(3, STP_CHD_L, STP_CHD_H);
+            } else {
+                setPwm(3, STP_CHA_L, STP_CHA_H);
+                setPwm(1, STP_CHB_L, STP_CHB_H);
+                setPwm(2, STP_CHC_L, STP_CHC_H);
+                setPwm(0, STP_CHD_L, STP_CHD_H);
+            }
+        }
+    }
     /**
      * Used to set the pulse range (0-4095) of a given pin on the smartboard
      * @param pinNumber The pin number (0-15) to set the pulse range on
@@ -257,7 +375,7 @@ namespace smartboard {
         const chip = getChipConfig(chipaddress_x) 
         ledNum = Math.max(1, Math.min(8, ledNum))
         dutyCycle = Math.max(0, Math.min(1, dutyCycle))
-        const servo: ServoConfig = chip.servos[ledNum - 1]
+        const servo: ServoConfig = chip.servos[ledNum - 1]    //配置芯片
         const pwm = (dutyCycle * (chipResolution - 1)) 
         
         debug(`setLedDutyCycle(${ledNum}, ${dutyCycle}`)
@@ -295,6 +413,36 @@ namespace smartboard {
         return setPinPulseRange(servo.pinNumber, 0, pwm)
     }
 
+      /**
+	 * Execute a 28BYJ-48 step motor(Degree).
+     * M1_M2/M3_M4.
+    */
+    //% weight=60
+    //% blockId=motor_stepperDegree_28 block="Stepper 28|%index|dir|%direction|degree|%degree"
+    //% index.fieldEditor="gridpicker" index.fieldOptions.columns=2
+    //% direction.fieldEditor="gridpicker" direction.fieldOptions.columns=2
+    export function stepperDegree_28(index: Steppers, direction: Dir, degree: number): void {
+        //if (!initialized) {
+        //    initPCA9685()
+        //}
+        if (degree == 0) { 
+            return;
+        }
+        let Degree = Math.abs(degree);
+        Degree = Degree * direction;
+        //setFreq(100);
+        setStepper_28(index, Degree > 0);
+        Degree = Math.abs(Degree);
+        basic.pause((1000 * Degree) / 360);
+        if (index == 1) {
+            motorStop(1)
+            motorStop(2)
+        }else{
+            motorStop(3)
+            motorStop(4)
+        }
+        //setFreq(50);
+    }
     /**
      * Used to set the rotation speed of a continous rotation servo from -100% to 100%
      * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
@@ -408,5 +556,10 @@ namespace smartboard {
 
     export function setDebug(debugEnabled: boolean): void {
         _DEBUG = debugEnabled
+    }
+
+    export function motorStop(index: Motors) {
+        setPwm((4 - index) * 2, 0, 0);
+        setPwm((4 - index) * 2 + 1, 0, 0);
     }
 }
