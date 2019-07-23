@@ -272,7 +272,8 @@ namespace smartboard {
         buf[2] = (on >> 8) & 0xff;
         buf[3] = off & 0xff;
         buf[4] = (off >> 8) & 0xff;
-        pins.i2cWriteBuffer(chipaddress_x, buf,false);
+        pins.i2cWriteBuffer(chipaddress_x, buf, false);
+        debug(`stepperdegree 2 (${chipaddress_x}, ${channel}, ${on}, ${off})`)
     }
     export function getChipConfig(address: number): ChipConfig {
         for (let i = 0; i < chips.length; i++) {
@@ -427,14 +428,14 @@ namespace smartboard {
         //if (!initialized) {
         //    initPCA9685()
         //}
-        debug(`stepperdegree (${index}, ${direction}, ${degree})`)
+        debug(`stepperdegree 1 (${index}, ${direction}, ${degree})`)
         if (degree == 0) { 
             return;
         }
         let Degree = Math.abs(degree);
         Degree = Degree * direction;
         //setFreq(100);
-        debug(`stepperdegree (${index}, ${direction}, ${degree})`)
+        debug(`stepperdegree 2 (${index}, ${direction}, ${degree})`)
         setStepper_28(index, Degree > 0);
         Degree = Math.abs(Degree);
         basic.pause((1000 * Degree) / 360);
