@@ -434,6 +434,7 @@ namespace smartboard {
         let Degree = Math.abs(degree);
         Degree = Degree * direction;
         //setFreq(100);
+        debug(`stepperdegree (${index}, ${direction}, ${degree})`)
         setStepper_28(index, Degree > 0);
         Degree = Math.abs(Degree);
         basic.pause((1000 * Degree) / 360);
