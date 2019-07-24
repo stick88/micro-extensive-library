@@ -2,7 +2,7 @@
 /**
  * smartboard
  */
-//% weight=100 color=#ff0ff0 icon=""
+//% weight=100 color=#ff0fa0 icon=""
 namespace smartboard {
     let _DEBUG: boolean = true
     const debug = (msg: string) => {
@@ -47,17 +47,17 @@ namespace smartboard {
     */
 
 
-    const STP_CHA_L = 1
-    const STP_CHA_H = 2559
+    const STP_CHA_L = chipResolution-1
+    const STP_CHA_H = chipResolution-2559
 
-    const STP_CHB_L = 1023
-    const STP_CHB_H = 2559
+    const STP_CHB_L = chipResolution-1023
+    const STP_CHB_H = chipResolution-2559
 
-    const STP_CHC_L = 2047
-    const STP_CHC_H = 2559
+    const STP_CHC_L = chipResolution-2047
+    const STP_CHC_H = chipResolution-2559
 
-    const STP_CHD_L = 3071
-    const STP_CHD_H = 2559
+    const STP_CHD_L = chipResolution-3071
+    const STP_CHD_H = chipResolution-2559
 
     const BYG_CHA_L = 3071
     const BYG_CHA_H = 1023
