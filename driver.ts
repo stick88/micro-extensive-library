@@ -33,7 +33,7 @@ namespace smartboard {
     const channel0OffStepLowByte = 0x08 // LED0_OFF_L
     const channel0OffStepHighByte = 0x09 // LED0_OFF_H
 
-    const STP_CHA_L = 2047
+   /* const STP_CHA_L = 2047
     const STP_CHA_H = 4095
 
     const STP_CHB_L = 1
@@ -44,7 +44,20 @@ namespace smartboard {
 
     const STP_CHD_L = 3071
     const STP_CHD_H = 1023
+    */
 
+
+    const STP_CHA_L = 1
+    const STP_CHA_H = 2559
+
+    const STP_CHB_L = 1023
+    const STP_CHB_H = 2559
+
+    const STP_CHC_L = 2047
+    const STP_CHC_H = 2559
+
+    const STP_CHD_L = 3071
+    const STP_CHD_H = 2559
 
     const BYG_CHA_L = 3071
     const BYG_CHA_H = 1023
