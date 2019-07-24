@@ -334,7 +334,7 @@ namespace smartboard {
         onStep = Math.max(0, Math.min(4095, onStep))
         offStep = Math.max(0, Math.min(4095, offStep))
 
-        debug(`setPinPulseRange(${pinNumber}, ${onStep}, ${offStep})`)
+        debug(`setPinPulseRange (${pinNumber}, ${onStep}, ${offStep})`)
         debug(`  pinOffset ${pinOffset}`)
 
         // Low byte of onStep
