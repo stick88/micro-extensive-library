@@ -2,7 +2,7 @@
 /**
  * smartboard
  */
-//% weight=100 color=#ff0fa0 icon=""
+//% weight=100 color=#0f0fff icon=""
 namespace smartboard {
     let _DEBUG: boolean = true
     const debug = (msg: string) => {
