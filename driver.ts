@@ -143,8 +143,8 @@ namespace smartboard {
         
     }
     export enum Pinstatus {
-        ON  =  0,
-        OFF =  1,
+        Low  =  0,
+        Hig =  1,
         
         
     }
