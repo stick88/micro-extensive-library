@@ -2,7 +2,7 @@
 /**
  * smartboard
  */
-//% weight=100 color=#fff00f icon=""
+//% weight=100 color=#ff0ff0 icon=""
 namespace smartboard {
     let _DEBUG: boolean = true
     const debug = (msg: string) => {
@@ -453,11 +453,11 @@ namespace smartboard {
         Degree = Math.abs(Degree);
         basic.pause((1000 * Degree) / 360);
         if (index == 1) {
-            motorStop(1)
-            motorStop(2)
+            //motorStop(1)
+           // motorStop(2)
         }else{
-            motorStop(3)
-            motorStop(4)
+            //motorStop(3)
+            //motorStop(4)
         }
         //setFreq(50);
     }
